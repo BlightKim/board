@@ -11,7 +11,6 @@ import lombok.Getter;
 
 @Entity(name = "User")
 @Table(name = "User")
-@Builder
 @Getter
 public class UserEntity {
   @Id
@@ -20,6 +19,8 @@ public class UserEntity {
 
   @Column(unique = true)
   private String userEmail;
+
+  private String userPassword;
 
   private String userNickname;
 
@@ -31,15 +32,16 @@ public class UserEntity {
 
   public UserEntity() {
   }
-
-
-  public UserEntity(Long userNumber, String userEmail, String userNickname, String userPhoneNumber,
-      String userAddress, String userProfile) {
-    this.userNumber = userNumber;
+  @Builder
+  public UserEntity(String userEmail, String userPassword, String userNickname,
+      String userPhoneNumber, String userAddress, String userProfile) {
     this.userEmail = userEmail;
+    this.userPassword = userPassword;
     this.userNickname = userNickname;
     this.userPhoneNumber = userPhoneNumber;
     this.userAddress = userAddress;
     this.userProfile = userProfile;
   }
+
+
 }

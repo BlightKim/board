@@ -1,13 +1,19 @@
 package com.sebin.board.dto;
 
-import javax.validation.constraints.NotBlank;
+
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 @Data
 public class SignInDto {
   @NotBlank
-  private String userEmail;
+  private String email;
   @NotBlank
-  private String userPassword;
+  private String password;
 
+
+  public UsernamePasswordAuthenticationToken toAuthentication() {
+    return new UsernamePasswordAuthenticationToken(email, password);
+  }
 }

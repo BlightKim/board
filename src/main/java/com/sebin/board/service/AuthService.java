@@ -4,6 +4,7 @@ import com.sebin.board.dto.*;
 import com.sebin.board.entity.Member;
 import com.sebin.board.exception.DuplicateIdException;
 import com.sebin.board.jwt.TokenProvider;
+import com.sebin.board.reposiotry.MemberQueryRepository;
 import com.sebin.board.reposiotry.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,7 @@ public class AuthService {
   private final PasswordEncoder passwordEncoder;
   private final AuthenticationManagerBuilder managerBuilder;
   private final TokenProvider tokenProvider;
+  private final MemberQueryRepository memberQueryRepository;
 
   @Transactional
   public ResponseDto<?> signUp(SignUpDto signUpDto) {
@@ -51,9 +53,12 @@ public class AuthService {
 
 
   public ResponseDto<TokenDto> signIn(SignInDto signInDto) {
+
     UsernamePasswordAuthenticationToken authenticationToken = signInDto.toAuthentication();
     Authentication authentication = managerBuilder.getObject().authenticate(authenticationToken);
-    TokenDto tokenDto = tokenProvider.generateToken(authentication);
+    String email = authentication.getName();
+    MemberInfoDto memberInfoDto = memberQueryRepository.searchOne(email);
+    TokenDto tokenDto = tokenProvider.generateToken(authentication, memberInfoDto);
     return ResponseDto.set(true, "Login Success", tokenDto);
   }
 

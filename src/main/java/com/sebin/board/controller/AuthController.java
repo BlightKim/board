@@ -5,6 +5,7 @@ import com.sebin.board.dto.SignInDto;
 import com.sebin.board.dto.SignUpDto;
 import com.sebin.board.dto.TokenDto;
 import com.sebin.board.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +26,8 @@ public class AuthController {
   }
 
   @PostMapping("/signIn")
-  public ResponseDto<TokenDto> signIn(@RequestBody SignInDto requestBody) {
-    return authService.signIn(requestBody);
+  public ResponseDto<TokenDto> signIn(@Valid @RequestBody SignInDto requestBody) {
+    ResponseDto<TokenDto> tokenDtoResponseDto = authService.signIn(requestBody);
+    return tokenDtoResponseDto;
   }
 }

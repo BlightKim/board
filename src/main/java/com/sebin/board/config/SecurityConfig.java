@@ -21,39 +21,41 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 @Component
 public class SecurityConfig implements WebMvcConfigurer {
+
   private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
   private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
   private final TokenProvider tokenProvider;
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000")
-                .allowedMethods("OPTIONS", "GET", "POST", "PUT", "DELETE");
-    }
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .httpBasic().disable()
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+  @Override
+  public void addCorsMappings(CorsRegistry registry) {
+    registry.addMapping("/**")
+        .allowedOrigins("http://localhost:3000")
+        .allowedMethods("OPTIONS", "GET", "POST", "PUT", "DELETE");
+  }
 
-                .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                .accessDeniedHandler(jwtAccessDeniedHandler)
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http
+        .httpBasic().disable()
+        .csrf().disable()
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
-                .and()
-                .securityMatcher("/**").authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/api/auth/**").permitAll();
-                })
-                .apply(new JwtSecurityConfig(tokenProvider));
+        .and()
+        .securityMatcher("/**").authorizeHttpRequests(auth -> {
+          auth.requestMatchers("/api/auth/**").permitAll();
+          auth.anyRequest().authenticated();
+        })
+        .exceptionHandling((exceptionHandling) -> {
+          exceptionHandling.authenticationEntryPoint(jwtAuthenticationEntryPoint);
+          exceptionHandling.accessDeniedHandler(jwtAccessDeniedHandler);
+        })
+        .apply(new JwtSecurityConfig(tokenProvider));
 
-        return http.build();
-    }
+    return http.build();
+  }
 }

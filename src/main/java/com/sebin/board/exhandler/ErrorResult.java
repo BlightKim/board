@@ -12,12 +12,14 @@ import org.springframework.boot.context.properties.bind.validation.ValidationErr
 @Data
 public class ErrorResult {
   private String timeStamp;
-  private String code;
+  private String path;
+  private Integer code;
   private String message;
 
   @Builder
-  public ErrorResult(String timeStamp, String code, String message) {
+  public ErrorResult(String timeStamp, String path, Integer code, String message) {
     this.timeStamp = timeStamp;
+    this.path = path;
     this.code = code;
     this.message = message;
   }

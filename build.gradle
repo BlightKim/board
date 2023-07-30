@@ -72,9 +72,9 @@ tasks.named('test') {
 
 jacocoTestReport {
     reports {
-        html.required = true
-        xml.required = true
-        csv.required = true
+        html.required=true
+        xml.required=true
+        csv.required=true
     }
 
     afterEvaluate { // report에서 제외함. 안보여주기만 하는 것.

@@ -1,4 +1,5 @@
-FROM ubuntu:latest
-LABEL authors="ksb96"
-
-ENTRYPOINT ["top", "-b"]
+FROM openjdk:17
+VOLUME /tmp
+ARG JAR_FILE=./build/libs/*.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-jar","app.jar"]

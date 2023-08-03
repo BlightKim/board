@@ -4,7 +4,7 @@ import com.sebin.board.dto.*;
 import com.sebin.board.entity.Member;
 import com.sebin.board.exception.DuplicateIdException;
 import com.sebin.board.jwt.TokenProvider;
-import com.sebin.board.reposiotry.MemberQueryRepository;
+import com.sebin.board.reposiotry.queryrepository.MemberQueryRepository;
 import com.sebin.board.reposiotry.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

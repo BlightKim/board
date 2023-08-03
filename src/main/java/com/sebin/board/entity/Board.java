@@ -5,10 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Entity(name = "Board")
-@Table(name = "Board")
+@Entity
 @Builder
-public class BoardEntity {
+public class Board {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,10 +37,10 @@ public class BoardEntity {
 
   private Integer boardCommentCount;
 
-  public BoardEntity() {
+  public Board() {
   }
 
-  public BoardEntity(Long boardNumber, String boardTitle, String boardContent, String boardImage,
+  public Board(Long boardNumber, String boardTitle, String boardContent, String boardImage,
       String boardVideo, String boardFile, Long boardWriterNumber, String boardWriterProfile,
       String boardWriterNickname, String boardWriteDate, Long clickCount, Integer boardLikeCount,
       Integer boardCommentCount) {

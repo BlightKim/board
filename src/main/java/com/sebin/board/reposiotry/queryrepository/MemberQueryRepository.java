@@ -1,4 +1,4 @@
-package com.sebin.board.reposiotry;
+package com.sebin.board.reposiotry.queryrepository;
 
 import static com.sebin.board.entity.QMember.member;
 

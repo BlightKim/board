@@ -10,14 +10,14 @@ import com.querydsl.core.types.Path;
 
 
 /**
- * QBoardEntity is a Querydsl query type for BoardEntity
+ * QBoard is a Querydsl query type for Board
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QBoardEntity extends EntityPathBase<BoardEntity> {
+public class QBoard extends EntityPathBase<Board> {
 
-    private static final long serialVersionUID = 373654828L;
+    private static final long serialVersionUID = -619182103L;
 
-    public static final QBoardEntity boardEntity = new QBoardEntity("boardEntity");
+    public static final QBoard board = new QBoard("board");
 
     public final NumberPath<Integer> boardCommentCount = createNumber("boardCommentCount", Integer.class);
 
@@ -45,16 +45,16 @@ public class QBoardEntity extends EntityPathBase<BoardEntity> {
 
     public final NumberPath<Long> clickCount = createNumber("clickCount", Long.class);
 
-    public QBoardEntity(String variable) {
-        super(BoardEntity.class, forVariable(variable));
+    public QBoard(String variable) {
+        super(Board.class, forVariable(variable));
     }
 
-    public QBoardEntity(Path<? extends BoardEntity> path) {
+    public QBoard(Path<? extends Board> path) {
         super(path.getType(), path.getMetadata());
     }
 
-    public QBoardEntity(PathMetadata metadata) {
-        super(BoardEntity.class, metadata);
+    public QBoard(PathMetadata metadata) {
+        super(Board.class, metadata);
     }
 
 }

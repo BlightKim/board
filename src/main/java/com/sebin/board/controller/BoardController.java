@@ -3,8 +3,10 @@ package com.sebin.board.controller;
 import com.sebin.board.config.SecurityUtil;
 import com.sebin.board.dto.BoardDto;
 import com.sebin.board.dto.MemberInfoDto;
+import com.sebin.board.dto.PopularSearchDto;
 import com.sebin.board.dto.ResponseDto;
 import com.sebin.board.service.BoardService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -28,10 +30,20 @@ public class BoardController {
     return "getBoard";
   }
 
-/*  @GetMapping("/top3")
-  public ResponseDto<BoardDto> getTopThree() {
+  @GetMapping("/top3")
+  public ResponseDto<List<BoardDto>> getTopThree() {
+    return boardService.searchTopThree();
+  }
 
-  }*/
+  @GetMapping("/list")
+  public ResponseDto<List<BoardDto>> getList() {
+    return boardService.searchList();
+  }
+
+  @GetMapping("/popularSearchList")
+  public ResponseDto<List<PopularSearchDto>> getPopularSearchList() {
+    return boardService.searchPopularSearchList();
+  }
 }
 
 

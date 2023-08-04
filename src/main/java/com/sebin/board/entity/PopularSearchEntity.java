@@ -12,7 +12,7 @@ import lombok.Getter;
 @Getter
 public class PopularSearchEntity {
   @Id
-  private String popular_team;
+  private String popularTerm;
 
   private Integer popularSearchCount;
 
@@ -20,7 +20,7 @@ public class PopularSearchEntity {
   }
 
   public PopularSearchEntity(String popular_team, Integer popularSearchCount) {
-    this.popular_team = popular_team;
+    this.popularTerm = popular_team;
     this.popularSearchCount = popularSearchCount;
   }
 }

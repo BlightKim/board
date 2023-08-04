@@ -19,9 +19,9 @@ public class QPopularSearchEntity extends EntityPathBase<PopularSearchEntity> {
 
     public static final QPopularSearchEntity popularSearchEntity = new QPopularSearchEntity("popularSearchEntity");
 
-    public final StringPath popular_team = createString("popular_team");
-
     public final NumberPath<Integer> popularSearchCount = createNumber("popularSearchCount", Integer.class);
+
+    public final StringPath popularTerm = createString("popularTerm");
 
     public QPopularSearchEntity(String variable) {
         super(PopularSearchEntity.class, forVariable(variable));

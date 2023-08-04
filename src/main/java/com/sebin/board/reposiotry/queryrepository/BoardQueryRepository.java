@@ -12,6 +12,7 @@ import io.netty.util.internal.StringUtil;
 import jakarta.persistence.EntityManager;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -26,9 +27,7 @@ public class BoardQueryRepository {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    public List<BoardDto> findTopThree() {
-        LocalDate now = LocalDate.now();
-        LocalDate oneWeekAgo = now.minusWeeks(1);
+    public List<BoardDto> findTopThree(LocalDate now, LocalDate oneWeekAgo) {
 
         return queryFactory.select(
                         new QBoardDto(board.boardNumber, board.boardTitle, board.boardContent, board.boardImage,
@@ -39,5 +38,17 @@ public class BoardQueryRepository {
                 .orderBy(board.clickCount.desc())
                 .limit(3)
                 .fetch();
+    }
+
+    public List<BoardDto> findList() {
+
+        return queryFactory.select(
+                new QBoardDto(board.boardNumber, board.boardTitle, board.boardContent, board.boardImage,
+                    board.boardVideo, board.boardFile, board.boardWriterNumber, board.boardWriterProfile,
+                    board.boardWriterNickname, board.boardWriteDate, board.clickCount, board.boardLikeCount,
+                    board.boardCommentCount)
+            ).from(board)
+            .orderBy(board.clickCount.desc())
+            .fetch();
     }
 }

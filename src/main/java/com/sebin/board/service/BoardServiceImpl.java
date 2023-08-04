@@ -14,6 +14,6 @@ public class BoardServiceImpl implements BoardService{
   private final BoardQueryRepository boardQueryRepository;
   @Override
   public List<BoardDto> searchTopThree() {
-    boardQueryRepository.findTopThree();
+    return boardQueryRepository.findTopThree();
   }
 }

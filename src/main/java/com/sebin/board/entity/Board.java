@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Getter
 @Entity
 @Builder
@@ -29,7 +32,7 @@ public class Board {
 
   private String boardWriterNickname;
 
-  private String boardWriteDate;
+  private LocalDate boardWriteDate;
 
   private Long clickCount;
 
@@ -41,9 +44,9 @@ public class Board {
   }
 
   public Board(Long boardNumber, String boardTitle, String boardContent, String boardImage,
-      String boardVideo, String boardFile, Long boardWriterNumber, String boardWriterProfile,
-      String boardWriterNickname, String boardWriteDate, Long clickCount, Integer boardLikeCount,
-      Integer boardCommentCount) {
+               String boardVideo, String boardFile, Long boardWriterNumber, String boardWriterProfile,
+               String boardWriterNickname, LocalDate boardWriteDate, Long clickCount, Integer boardLikeCount,
+               Integer boardCommentCount) {
     this.boardNumber = boardNumber;
     this.boardTitle = boardTitle;
     this.boardContent = boardContent;

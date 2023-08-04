@@ -4,6 +4,8 @@ import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 import lombok.Getter;
 
+import java.time.LocalDate;
+
 @Data
 @Getter
 public class BoardDto {
@@ -25,7 +27,7 @@ public class BoardDto {
 
   private String boardWriterNickname;
 
-  private String boardWriteDate;
+  private LocalDate boardWriteDate;
 
   private Long clickCount;
 
@@ -40,7 +42,7 @@ public class BoardDto {
   @QueryProjection
   public BoardDto(Long boardNumber, String boardTitle, String boardContent, String boardImage,
       String boardVideo, String boardFile, Long boardWriterNumber, String boardWriterProfile,
-      String boardWriterNickname, String boardWriteDate, Long clickCount, Integer boardLikeCount,
+      String boardWriterNickname, LocalDate boardWriteDate, Long clickCount, Integer boardLikeCount,
       Integer boardCommentCount) {
     this.boardNumber = boardNumber;
     this.boardTitle = boardTitle;

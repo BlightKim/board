@@ -28,10 +28,10 @@ public class BoardController {
     return "getBoard";
   }
 
-  @GetMapping("/top3")
+/*  @GetMapping("/top3")
   public ResponseDto<BoardDto> getTopThree() {
 
-  }
+  }*/
 }
 
 

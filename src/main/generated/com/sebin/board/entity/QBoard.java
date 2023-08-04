@@ -35,7 +35,7 @@ public class QBoard extends EntityPathBase<Board> {
 
     public final StringPath boardVideo = createString("boardVideo");
 
-    public final StringPath boardWriteDate = createString("boardWriteDate");
+    public final DatePath<java.time.LocalDate> boardWriteDate = createDate("boardWriteDate", java.time.LocalDate.class);
 
     public final StringPath boardWriterNickname = createString("boardWriterNickname");
 

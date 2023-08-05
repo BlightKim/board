@@ -48,11 +48,14 @@ dependencies {
 
     annotationProcessor 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     testImplementation "org.junit.jupiter:junit-jupiter:5.8.1"
     testImplementation "org.testcontainers:testcontainers:1.17.6"
     testImplementation "org.testcontainers:junit-jupiter:1.17.6"
+// https://mvnrepository.com/artifact/org.springframework.security/spring-security-test
+    testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '6.1.2'
 
     // querydsl 설정
     implementation("com.querydsl:querydsl-core:${queryDslVersion}")
@@ -73,9 +76,9 @@ tasks.named('test') {
 
 jacocoTestReport {
     reports {
-        html.required=true
-        xml.required=true
-        csv.required=true
+        html.required = true
+        xml.required = true
+        csv.required = true
     }
 
     afterEvaluate { // report에서 제외함. 안보여주기만 하는 것.

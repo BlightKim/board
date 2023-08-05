@@ -2,12 +2,16 @@ package com.sebin.board.jwt;
 
 import com.sebin.board.dto.MemberInfoDto;
 import com.sebin.board.dto.TokenDto;
+import com.sebin.board.service.RedisService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,10 +34,15 @@ public class TokenProvider {
   private static final String BEARER_TYPE = "bearer";
   private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;
   private final Key key;
+  private final RedisService redisService;
 
-  public TokenProvider(@Value("${jwt.secret}") String secretKey) {
+
+  @Autowired
+  public TokenProvider(@Value("${jwt.secret}") String secretKey,
+      RedisService redisService) {
     byte[] keyBytes = Decoders.BASE64.decode(secretKey);
     this.key = Keys.hmacShaKeyFor(keyBytes);
+    this.redisService = redisService;
   }
 
   /**
@@ -55,19 +64,30 @@ public class TokenProvider {
 
     log.info("tokenExpiresIn={}", tokenExpiresIn);
 
-    String accessToken = Jwts.builder()
-        .setSubject(authentication.getName())
-        .claim(AUTHORITIES_KEY, authorities)
-        .setExpiration(tokenExpiresIn)
-        .signWith(key, SignatureAlgorithm.HS512)
-        .compact();
+    // Access Token을 생성한다.
+    String accessToken = generateAccessToken(authentication, authorities, tokenExpiresIn);
+
+    // Refresh Token을 생성한다.
+    String refreshToken = generateRefreshToken(authentication);
 
     return TokenDto.builder()
         .grantType(BEARER_TYPE)
         .accessToken(accessToken)
+        .refreshToken(refreshToken)
         .tokenExpiresIn(tokenExpiresIn.getTime())
         .member(memberInfoDto)
         .build();
+  }
+
+  private String generateRefreshToken(Authentication authentication) {
+    Claims claims = Jwts.claims().setSubject(authentication.getName());
+    Date now = new Date();
+    return Jwts.builder()
+        .setClaims(claims)
+        .setIssuedAt(now)
+        .setExpiration(new Date(now.getTime() + 1000 * 60 * 60 * 24 * 3)) // Refresh Token 유효시간(3일)
+        .signWith(SignatureAlgorithm.HS512, key) // HS512 알고리즘으로 key를 암호화
+        .compact();
   }
 
 
@@ -115,5 +135,15 @@ public class TokenProvider {
     } catch (ExpiredJwtException e) {
       return e.getClaims();
     }
+  }
+
+  private String generateAccessToken(Authentication authentication, String authorities,
+      Date tokenExpiresIn) {
+    return Jwts.builder()
+        .setSubject(authentication.getName())
+        .claim(AUTHORITIES_KEY, authorities)
+        .setExpiration(tokenExpiresIn)
+        .signWith(key, SignatureAlgorithm.HS512)
+        .compact();
   }
 }

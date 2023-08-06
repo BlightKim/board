@@ -3,12 +3,15 @@ package com.sebin.board.config.code;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
-
+@Testcontainers
 public class TestContainerConfig implements BeforeAllCallback {
 
   private static final int REDIS_PORT = 6379;
-  private GenericContainer redis;
+  private static GenericContainer redis;
 
   @Override
   public void beforeAll(ExtensionContext context) {

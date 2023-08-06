@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 
 @Component
 @Slf4j
-public class TokenProvider {
+public class TokenProvider{
 
   private static final String AUTHORITIES_KEY = "auth";
   private static final String BEARER_TYPE = "bearer";
@@ -69,6 +69,9 @@ public class TokenProvider {
 
     // Refresh Token을 생성한다.
     String refreshToken = generateRefreshToken(authentication);
+
+    // key : email / value : refresh 토큰으로 Redis에 저장한다.
+    redisService.setData(authentication.getName(),refreshToken, 1000 * 60 * 60 * 24 * 3L);
 
     return TokenDto.builder()
         .grantType(BEARER_TYPE)

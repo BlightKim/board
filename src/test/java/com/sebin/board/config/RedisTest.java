@@ -16,12 +16,13 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @Import(RedisConfig.class)
-@ExtendWith(TestContainerConfig.class)
-class RedisTest {
+//@ExtendWith(TestContainerConfig.class)
+class RedisTest extends TestContainerConfig{
 
   @Autowired
   private RedisTemplate<String, Object> redisTemplate;

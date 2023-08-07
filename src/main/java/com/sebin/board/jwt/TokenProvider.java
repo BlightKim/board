@@ -82,7 +82,7 @@ public class TokenProvider{
         .build();
   }
 
-  private String generateRefreshToken(Authentication authentication) {
+  public String generateRefreshToken(Authentication authentication) {
     Claims claims = Jwts.claims().setSubject(authentication.getName());
     Date now = new Date();
     return Jwts.builder()

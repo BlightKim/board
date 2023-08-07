@@ -9,14 +9,12 @@ import com.sebin.board.service.RedisServiceImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -37,7 +35,7 @@ class RedisTest extends TestContainerConfig{
   @Test
   public void test() {
     redisService.setData("세빈", "수진", 1000 * 60 * 600L);
-    String value = redisService.getDate("세빈");
+    String value = redisService.getData("세빈");
     Assertions.assertThat(value).isEqualTo("수진");
   }
 }

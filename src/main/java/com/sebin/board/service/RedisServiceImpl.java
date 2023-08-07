@@ -1,5 +1,7 @@
 package com.sebin.board.service;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -20,9 +22,14 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
-    public String getDate(String key) {
+    public String getData(String key) {
         // 데이터 셀렉트 --> 반환은 스트링
-        return (String) redisTemplate.opsForValue().get(key);
+        String result = (String) redisTemplate.opsForValue().get(key);
+
+        if (result == null) {
+            throw new ExpiredJwtException(null, null, "토큰이 만료되었습니다.");
+        }
+        return result;
     }
 
     @Override

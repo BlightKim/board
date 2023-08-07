@@ -33,6 +33,7 @@ public class TokenProvider{
   private static final String AUTHORITIES_KEY = "auth";
   private static final String BEARER_TYPE = "bearer";
   private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;
+  private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 3L;
   private final Key key;
   private final RedisService redisService;
 
@@ -68,7 +69,7 @@ public class TokenProvider{
     String accessToken = generateAccessToken(authentication, authorities, tokenExpiresIn);
 
     // Refresh Token을 생성한다.
-    String refreshToken = generateRefreshToken(authentication);
+    String refreshToken = generateRefreshToken(authentication, REFRESH_TOKEN_EXPIRE_TIME);
 
     // key : email / value : refresh 토큰으로 Redis에 저장한다.
     redisService.setData(authentication.getName(),refreshToken, 1000 * 60 * 60 * 24 * 3L);
@@ -82,13 +83,13 @@ public class TokenProvider{
         .build();
   }
 
-  public String generateRefreshToken(Authentication authentication) {
+  public String generateRefreshToken(Authentication authentication, Long refreshTokenExpireTime) {
     Claims claims = Jwts.claims().setSubject(authentication.getName());
     Date now = new Date();
     return Jwts.builder()
         .setClaims(claims)
         .setIssuedAt(now)
-        .setExpiration(new Date(now.getTime() + 1000 * 60 * 60 * 24 * 3)) // Refresh Token 유효시간(3일)
+        .setExpiration(new Date(now.getTime() + refreshTokenExpireTime)) // Refresh Token 유효시간(3일)
         .signWith(SignatureAlgorithm.HS512, key) // HS512 알고리즘으로 key를 암호화
         .compact();
   }
@@ -140,7 +141,7 @@ public class TokenProvider{
     }
   }
 
-  private String generateAccessToken(Authentication authentication, String authorities,
+  public String generateAccessToken(Authentication authentication, String authorities,
       Date tokenExpiresIn) {
     return Jwts.builder()
         .setSubject(authentication.getName())

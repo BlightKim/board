@@ -57,6 +57,7 @@ dependencies {
     testImplementation "org.testcontainers:mysql:1.17.2"
 // https://mvnrepository.com/artifact/org.springframework.security/spring-security-test
     testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '6.1.2'
+    testImplementation 'com.h2database:h2'
 
     // querydsl 설정
     implementation("com.querydsl:querydsl-core:${queryDslVersion}")
